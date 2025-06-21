@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head><title>Results</title></head>
+<body>
+  <h2>Interview Summary</h2>
+  {% for item in scored %}
+    <p><strong>Q:</strong> {{ item.question }}</p>
+    <p><strong>Answer:</strong> {{ item.answer }}</p>
+    <p><strong>Score:</strong> {{ item.score }}/10</p>
+    <p><strong>Feedback:</strong> {{ item.feedback }}</p>
+    <hr>
+  {% endfor %}
+  <h3>Average Score: {{ avg_score }}/10</h3>
+</body>
+</html>

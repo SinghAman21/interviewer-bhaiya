@@ -1,0 +1,12 @@
+{
+  "questions": [
+    {
+      "question": "Your ResumeMe project uses NLP to match resumes with job descriptions. Can you describe the specific NLP techniques you employed and the challenges you faced in achieving accurate matching, particularly considering the nuances of language and variations in resume formatting?",
+      "type": "technical"
+    },
+    {
+      "question": "Your resume highlights your involvement in both technical leadership roles (Technical Head at ITSA) and collaborative projects.  Describe a situation where you had to balance the need for technical excellence with the need for effective teamwork and collaboration to achieve a project goal. What were the challenges, and how did you overcome them?",
+      "type": "situational"
+    }
+  ]
+}

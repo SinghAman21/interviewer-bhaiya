@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Interview</title></head>
+<body>
+  <h2>Answer Questions by Recording</h2>
+  <form method="post" action="/submit_answers" enctype="multipart/form-data">
+    {% for q in questions %}
+      <p><strong>{{ loop.index }}. {{ q.question }}</strong></p>
+      <input type="hidden" name="question_{{ loop.index0 }}" value="{{ q.question }}">
+      <input type="file" name="audio_{{ loop.index0 }}" accept="audio/*" required>
+      <hr>
+    {% endfor %}
+    <input type="hidden" name="resume_path" value="{{ resume_path }}">
+    <!-- <span>Resume: <a href="{{ resume_path }}">{{ resume_path }}</a></span> -->
+    <button type="submit">Submit Answers</button>
+  </form>
+</body>
+</html>
