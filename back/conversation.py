@@ -80,6 +80,71 @@ Respond in JSON:
         print("❌ Gemini evaluation failed:", e)
         return {"score": 0, "feedback": "Unable to evaluate."}
 
+# def ask_and_evaluate(question):
+#     speak(question)
+
+#     filename = f"answer_{uuid.uuid4()}.wav"
+#     file_path = record_audio(filename)
+#     transcript = transcribe_audio(file_path)
+#     print(f"📝 Transcript: {transcript}")
+
+#     result = evaluate_answer(question, transcript)
+#     print(f"🎯 Score: {result['score']}/10")  #NOT NECESSARY ATM
+#     # print(f"💬 Feedback: {result['feedback']}") #NOT NECESSARY ATM
+
+#     # speak(f"You scored {result['score']} out of 10.")
+#     # speak(result["feedback"])
+
+#     return {
+#         "question": question,
+#         "answer": transcript,
+#         "score": result["score"],
+#         "feedback": result["feedback"],
+#         "audio_file": file_path
+#     }
+
+def analyze_audio_features(audio_path, transcript):
+    # Filler detection
+    filler_count = count_fillers(transcript)
+
+    # Silence detection
+    try:
+        # Load audio manually as numpy array for silence detection
+        y, sr = librosa.load(audio_path, sr=16000)
+        segs, _, _ = aS.silence_removal(y, sr, 0.05, 0.05, smooth_window=1.0, weight=0.3, plot=False)
+        
+        duration = librosa.get_duration(y=y, sr=sr)
+        spoken_duration = sum(end - start for start, end in segs)
+        silence_ratio = 1 - (spoken_duration / duration)
+    except Exception as e:
+        print("⚠️ Silence detection failed:", e)
+        silence_ratio = 0.2  # fallback
+
+    # Pitch & tempo detection
+    try:
+        y, sr = librosa.load(audio_path)
+        tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
+
+        pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
+        pitch_values = pitches[magnitudes > 0]
+        avg_pitch = float(pitch_values.mean()) if len(pitch_values) > 0 else 0
+    except Exception as e:
+        print("⚠️ Pitch/tempo analysis failed:", e)
+        tempo, avg_pitch = 0, 0
+
+    # Confidence scoring (heuristic)
+    confidence_score = 10 - (filler_count * 0.7 + silence_ratio * 10)
+    confidence_score = round(max(0, min(10, confidence_score)), 2)
+
+    return {
+        "filler_count": filler_count,
+        "silence_ratio": round(silence_ratio, 2),
+        "tempo": round(float(tempo), 2),
+        "avg_pitch": round(avg_pitch, 2),
+        "confidence_score": confidence_score
+    }
+
+
 def ask_and_evaluate(question):
     speak(question)
 
@@ -89,19 +154,26 @@ def ask_and_evaluate(question):
     print(f"📝 Transcript: {transcript}")
 
     result = evaluate_answer(question, transcript)
-    print(f"🎯 Score: {result['score']}/10")  #NOT NECESSARY ATM
-    print(f"💬 Feedback: {result['feedback']}") #NOT NECESSARY ATM
 
-    # speak(f"You scored {result['score']} out of 10.")
-    # speak(result["feedback"])
+    audio_features = analyze_audio_features(file_path, transcript)
+
+    print(f"🎯 Score: {result['score']}/10")
+    print(f"🧠 Confidence Score: {audio_features['confidence_score']}/10")
+    print(f"🙊 Fillers: {audio_features['filler_count']} | 🔇 Silence Ratio: {audio_features['silence_ratio']}")
 
     return {
         "question": question,
         "answer": transcript,
         "score": result["score"],
         "feedback": result["feedback"],
+        "confidence_score": audio_features["confidence_score"],
+        "filler_count": audio_features["filler_count"],
+        "silence_ratio": audio_features["silence_ratio"],
+        "tempo": audio_features["tempo"],
+        "avg_pitch": audio_features["avg_pitch"],
         "audio_file": file_path
     }
+
 
 def run_interview():
     speak("Welcome to your AI-powered voice interview.")

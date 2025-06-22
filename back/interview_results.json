@@ -1,16 +1,26 @@
 [
   {
-    "question": "Your ResumeMe project uses NLP to match resumes with job descriptions. Can you describe the specific NLP techniques you employed and the challenges you faced in achieving accurate matching, particularly considering the nuances of language and variations in resume formatting?",
-    "answer": "",
-    "score": 0,
-    "feedback": "The response is missing; no NLP techniques or challenges are described.",
-    "audio_file": "C:\\Users\\amans\\Documents\\Codium\\Interview\\back\\audio_input\\answer_3e6a2fac-f632-4dac-811d-2c013b4a79a6.wav"
+    "question": "Your ResumeMe project uses NLP to match resumes with job descriptions. Can you describe the specific NLP techniques you employed and the challenges you faced in achieving accurate matching, especially considering the variability in resume formatting and wording?",
+    "answer": " When I was working with NLP, it was a bit difficult for me since my teammates were...",
+    "score": 1,
+    "feedback": "The response fails to address the question and instead focuses on irrelevant factors.",
+    "confidence_score": 8.0,
+    "filler_count": 0,
+    "silence_ratio": 0.2,
+    "tempo": 83.35,
+    "avg_pitch": 1010.81,
+    "audio_file": "C:\\Users\\amans\\Documents\\Codium\\Interview\\back\\audio_input\\answer_6814838f-0a35-4d8c-9e05-7e775c304d41.wav"
   },
   {
-    "question": "Your resume highlights your involvement in both technical leadership roles (Technical Head at ITSA) and collaborative projects.  Describe a situation where you had to balance the need for technical excellence with the need for effective teamwork and collaboration to achieve a project goal. What were the challenges, and how did you overcome them?",
-    "answer": " How should I tell you, I'm not able to find the exact verse.",
+    "question": "Your resume highlights your involvement in both technical and leadership roles within ITSA and Google Developer Groups.  Describe a situation where you had to manage a conflict within a team, and explain the steps you took to resolve it and the outcome.",
+    "answer": " I was the only one who was able to do the things and I was not able to",
     "score": 0,
-    "feedback": "The response is completely irrelevant and does not address the interview question.",
-    "audio_file": "C:\\Users\\amans\\Documents\\Codium\\Interview\\back\\audio_input\\answer_f0555e63-d212-4eea-b9cf-46cafd7ef797.wav"
+    "feedback": "The response is incomplete and doesn't describe a conflict resolution situation.",
+    "confidence_score": 8.0,
+    "filler_count": 0,
+    "silence_ratio": 0.2,
+    "tempo": 172.27,
+    "avg_pitch": 807.6,
+    "audio_file": "C:\\Users\\amans\\Documents\\Codium\\Interview\\back\\audio_input\\answer_d9929ee7-b9fb-4a27-9234-61756f3d6d41.wav"
   }
 ]
