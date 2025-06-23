@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { mockInterviewService, mockJobService } from '../../services/mockApi';
+import { mockInterviewService, mockJobService } from '../../services/realTimeApi';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Button } from '../../components/ui/Button';
 import { Star, Download, Share, ArrowLeft, MessageSquare, Clock, CheckCircle, TrendingUp, User, Notebook as Robot } from 'lucide-react';
@@ -12,18 +12,17 @@ export const InterviewResults: React.FC = () => {
   const [interview, setInterview] = useState<Interview | null>(null);
   const [job, setJob] = useState<Job | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const fetchData = async () => {
       if (!interviewId) return;
 
       try {
         const interviewResponse = await mockInterviewService.getInterviewById(interviewId);
-        if (interviewResponse.success && interviewResponse.interview) {
+        if (interviewResponse.success && 'interview' in interviewResponse) {
           setInterview(interviewResponse.interview);
           
           const jobResponse = await mockJobService.getJobById(interviewResponse.interview.jobId);
-          if (jobResponse.success && jobResponse.job) {
+          if (jobResponse.success && 'job' in jobResponse) {
             setJob(jobResponse.job);
           }
         }

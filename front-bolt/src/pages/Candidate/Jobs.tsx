@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { mockJobService, mockInterviewService } from '../../services/mockApi';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
@@ -29,14 +28,18 @@ export const Jobs: React.FC = () => {
     time: '',
   });
   const [isScheduling, setIsScheduling] = useState(false);
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
+  const [message, setMessage] = useState('');  useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await mockJobService.getJobs();
-        if (response.success) {
-          setJobs(response.jobs);
+        const response = await fetch('http://localhost:5000/jobs', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          }
+        });
+        
+        const result = await response.json();
+        if (result.success && result.jobs) {
+          setJobs(result.jobs);
         }
       } catch (error) {
         console.error('Error fetching jobs:', error);
@@ -53,7 +56,6 @@ export const Jobs: React.FC = () => {
     job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
     job.techStack.some(tech => tech.toLowerCase().includes(searchTerm.toLowerCase()))
   );
-
   const handleScheduleInterview = async () => {
     if (!selectedJob || !scheduleData.date || !scheduleData.time) {
       setMessage('Please select both date and time');
@@ -65,21 +67,31 @@ export const Jobs: React.FC = () => {
 
     try {
       const scheduledAt = new Date(`${scheduleData.date}T${scheduleData.time}`);
-      const response = await mockInterviewService.scheduleInterview(
-        user!.id,
-        selectedJob.id,
-        scheduledAt
-      );
+      
+      const response = await fetch('http://localhost:5000/interviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        },
+        body: JSON.stringify({
+          job_id: selectedJob.id,
+          scheduled_at: scheduledAt.toISOString()
+        })
+      });
 
-      if (response.success) {
+      const result = await response.json();
+
+      if (result.success && result.interview) {
         setMessage('Interview scheduled successfully!');
         setIsScheduleModalOpen(false);
         setScheduleData({ date: '', time: '' });
         setSelectedJob(null);
       } else {
-        setMessage('Failed to schedule interview. Please try again.');
+        setMessage('Failed to schedule interview: ' + (result.error || 'Unknown error'));
       }
     } catch (error) {
+      console.error('Error scheduling interview:', error);
       setMessage('Failed to schedule interview. Please try again.');
     } finally {
       setIsScheduling(false);

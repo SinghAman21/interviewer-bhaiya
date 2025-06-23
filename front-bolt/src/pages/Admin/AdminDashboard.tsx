@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { mockAdminService, mockJobService } from '../../services/mockApi';
+import { mockAdminService, mockJobService } from '../../services/realTimeApi';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { 
   Users, 
@@ -24,13 +24,11 @@ export const AdminDashboard: React.FC = () => {
         const [analyticsResponse, jobsResponse] = await Promise.all([
           mockAdminService.getInterviewAnalytics(),
           mockJobService.getJobs(),
-        ]);
-
-        if (analyticsResponse.success) {
+        ]);        if (analyticsResponse.success) {
           setAnalytics(analyticsResponse.analytics);
         }
 
-        if (jobsResponse.success) {
+        if (jobsResponse.success && 'jobs' in jobsResponse) {
           setJobs(jobsResponse.jobs);
         }
       } catch (error) {

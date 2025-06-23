@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { mockJobService, mockInterviewService } from '../../services/mockApi';
+import { mockJobService, mockInterviewService } from '../../services/realTimeApi';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { 
   Calendar, 
@@ -21,19 +21,18 @@ export const Dashboard: React.FC = () => {
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(() => {    const fetchData = async () => {
       try {
         const [jobsResponse, interviewsResponse] = await Promise.all([
           mockJobService.getJobs(),
           mockInterviewService.getInterviews(user?.id),
         ]);
 
-        if (jobsResponse.success) {
+        if (jobsResponse.success && 'jobs' in jobsResponse) {
           setJobs(jobsResponse.jobs.slice(0, 3)); // Show only recent jobs
         }
 
-        if (interviewsResponse.success) {
+        if (interviewsResponse.success && 'interviews' in interviewsResponse) {
           setInterviews(interviewsResponse.interviews);
         }
       } catch (error) {

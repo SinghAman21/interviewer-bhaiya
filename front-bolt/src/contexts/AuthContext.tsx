@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, AuthContextType } from '../types';
-import { mockAuthService } from '../services/mockApi';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -21,29 +20,50 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored auth token and user data
-    const token = localStorage.getItem('authToken');
-    const userData = localStorage.getItem('userData');
-    
-    if (token && userData) {
-      try {
-        setUser(JSON.parse(userData));
-      } catch (error) {
-        console.error('Error parsing stored user data:', error);
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userData');
+    // Check for stored auth token and fetch user data from server
+    const checkAuth = async () => {
+      const token = localStorage.getItem('access_token');
+      
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:5000/auth/profile', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          const result = await response.json();
+          if (result.success && result.user) {
+            setUser(result.user);
+          } else {
+            // Token is invalid, clear it
+            localStorage.removeItem('access_token');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          localStorage.removeItem('access_token');
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = async (email: string, password: string, role: 'candidate' | 'admin'): Promise<boolean> => {
     try {
-      const response = await mockAuthService.login(email, password, role);
-      if (response.success && response.user && response.token) {
-        setUser(response.user);
-        localStorage.setItem('authToken', response.token);
-        localStorage.setItem('userData', JSON.stringify(response.user));
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password, role })
+      });
+      
+      const result = await response.json();
+      if (result.success && result.user && result.access_token) {
+        setUser(result.user);
+        localStorage.setItem('access_token', result.access_token);
         return true;
       }
       return false;
@@ -51,15 +71,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.error('Login error:', error);
       return false;
     }
-  };
-
-  const signup = async (userData: Partial<User>, password: string): Promise<boolean> => {
+  };  const signup = async (userData: Partial<User>, password: string): Promise<boolean> => {
     try {
-      const response = await mockAuthService.signup(userData, password);
-      if (response.success && response.user && response.token) {
-        setUser(response.user);
-        localStorage.setItem('authToken', response.token);
-        localStorage.setItem('userData', JSON.stringify(response.user));
+      const response = await fetch('http://localhost:5000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...userData,
+          password
+        })
+      });
+      
+      const result = await response.json();
+      if (result.success && result.user && result.access_token) {
+        setUser(result.user);
+        localStorage.setItem('access_token', result.access_token);
         return true;
       }
       return false;
@@ -71,18 +99,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = (): void => {
     setUser(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
+    localStorage.removeItem('access_token');
   };
 
   const updateProfile = async (userData: Partial<User>): Promise<boolean> => {
     try {
       if (!user) return false;
       
-      const updatedUser = { ...user, ...userData };
-      setUser(updatedUser);
-      localStorage.setItem('userData', JSON.stringify(updatedUser));
-      return true;
+      const response = await fetch('http://localhost:5000/auth/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        },
+        body: JSON.stringify(userData)
+      });
+      
+      const result = await response.json();
+      if (result.success && result.user) {
+        setUser(result.user);
+        return true;
+      }
+      return false;
     } catch (error) {
       console.error('Update profile error:', error);
       return false;

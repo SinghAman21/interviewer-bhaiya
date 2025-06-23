@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { mockJobService } from '../../services/mockApi';
+import { mockJobService } from '../../services/realTimeApi';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -38,11 +38,10 @@ export const ManageJobs: React.FC = () => {
   useEffect(() => {
     fetchJobs();
   }, []);
-
   const fetchJobs = async () => {
     try {
       const response = await mockJobService.getJobs();
-      if (response.success) {
+      if (response.success && 'jobs' in response) {
         setJobs(response.jobs);
       }
     } catch (error) {

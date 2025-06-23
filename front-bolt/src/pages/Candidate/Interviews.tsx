@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { mockInterviewService, mockJobService } from '../../services/mockApi';
+import { mockInterviewService, mockJobService } from '../../services/realTimeApi';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Button } from '../../components/ui/Button';
 import { 
@@ -21,7 +21,6 @@ export const Interviews: React.FC = () => {
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,11 +29,11 @@ export const Interviews: React.FC = () => {
           mockJobService.getJobs(),
         ]);
 
-        if (interviewsResponse.success) {
+        if (interviewsResponse.success && 'interviews' in interviewsResponse) {
           setInterviews(interviewsResponse.interviews);
         }
 
-        if (jobsResponse.success) {
+        if (jobsResponse.success && 'jobs' in jobsResponse) {
           setJobs(jobsResponse.jobs);
         }
       } catch (error) {

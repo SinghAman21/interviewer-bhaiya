@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { mockInterviewService } from '../../services/mockApi';
+import { mockInterviewService } from '../../services/realTimeApi';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { 
   TrendingUp, 
@@ -18,12 +18,11 @@ export const Analytics: React.FC = () => {
   const { user } = useAuth();
   const [interviews, setInterviews] = useState<Interview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
         const response = await mockInterviewService.getInterviews(user?.id);
-        if (response.success) {
+        if (response.success && 'interviews' in response) {
           setInterviews(response.interviews);
         }
       } catch (error) {
