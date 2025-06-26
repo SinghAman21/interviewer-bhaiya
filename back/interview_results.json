@@ -1,26 +1,26 @@
 [
   {
-    "question": "Your ResumeMe project uses NLP to match resumes with job descriptions. Can you describe the specific NLP techniques you employed and the challenges you faced in achieving accurate matching, especially considering the variability in resume formatting and wording?",
-    "answer": " When I was working with NLP, it was a bit difficult for me since my teammates were...",
-    "score": 1,
-    "feedback": "The response fails to address the question and instead focuses on irrelevant factors.",
+    "question": "Your ResumeMe project uses NLP to match resumes with job descriptions.  Can you describe the specific NLP techniques you employed and the challenges you faced in achieving accurate matching, particularly considering the nuances of language and variations in resume formatting?",
+    "answer": "",
+    "score": 6,
+    "feedback": "The provided answer is missing.  To give a proper evaluation, the actual answer to the question needs to be supplied.  However, based on the audio features provided, the delivery shows some potential weaknesses. A silence ratio of 0.2 is relatively high, suggesting noticeable pauses that could disrupt the flow and make the response seem hesitant. While the tempo of 129.2 words per minute is within a reasonable range, the high average pitch of 2063.83 Hz indicates a potentially tense or nervous tone that may detract from the overall professionalism and clarity. The absence of filler words is a positive aspect, however, the content itself (which is missing) is the crucial element impacting the final score. A well-structured and technically sound answer to the NLP techniques used and challenges faced, even with this delivery, could raise the score significantly.  Without the content of the answer, I can only judge the delivery and that warrants a score of 6 out of 10.  A complete and well-explained answer on the technical details could increase this score substantially.",
     "confidence_score": 8.0,
     "filler_count": 0,
     "silence_ratio": 0.2,
-    "tempo": 83.35,
-    "avg_pitch": 1010.81,
-    "audio_file": "C:\\Users\\amans\\Documents\\Codium\\Interview\\back\\audio_input\\answer_6814838f-0a35-4d8c-9e05-7e775c304d41.wav"
+    "tempo": 129.2,
+    "avg_pitch": 2063.83,
+    "audio_file": "C:\\Users\\amans\\Documents\\Codium\\Interview\\back\\audio_input\\answer_109a546a-1b3e-4511-9a29-845ea2a4bdb2.wav"
   },
   {
-    "question": "Your resume highlights your involvement in both technical and leadership roles within ITSA and Google Developer Groups.  Describe a situation where you had to manage a conflict within a team, and explain the steps you took to resolve it and the outcome.",
-    "answer": " I was the only one who was able to do the things and I was not able to",
-    "score": 0,
-    "feedback": "The response is incomplete and doesn't describe a conflict resolution situation.",
+    "question": "The Healthcare AI Link project involved integrating real-time government data.  Describe a situation where you encountered unexpected data inconsistencies or delays. How did you adapt your approach to ensure the project's success and the accuracy of the fund distribution suggestions?",
+    "answer": "",
+    "score": 6,
+    "feedback": "The provided answer is missing.  Therefore, I cannot evaluate the content.  However, the delivery metrics suggest some areas for improvement. A silence ratio of 0.2 indicates noticeable pauses, which might disrupt the flow and make the response sound hesitant.  While a tempo of 129.2 words per minute is generally acceptable, it's on the faster side; slightly slower might improve clarity and comprehension.  The average pitch of 2063.83 Hz is relatively high, suggesting a potentially tense or overly excited tone.  A more modulated pitch would likely enhance the professional impact.  The absence of filler words is positive.",
     "confidence_score": 8.0,
     "filler_count": 0,
     "silence_ratio": 0.2,
-    "tempo": 172.27,
-    "avg_pitch": 807.6,
-    "audio_file": "C:\\Users\\amans\\Documents\\Codium\\Interview\\back\\audio_input\\answer_d9929ee7-b9fb-4a27-9234-61756f3d6d41.wav"
+    "tempo": 129.2,
+    "avg_pitch": 2063.83,
+    "audio_file": "C:\\Users\\amans\\Documents\\Codium\\Interview\\back\\audio_input\\answer_2a0e6e8d-627e-42fe-ac4e-f4b95cf8bb97.wav"
   }
 ]

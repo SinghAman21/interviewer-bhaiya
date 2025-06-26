@@ -56,19 +56,23 @@ def transcribe_audio(file_path):
     segments, _ = whisper_model.transcribe(file_path)
     return " ".join([seg.text for seg in segments])
 
-def evaluate_answer(question, answer):
+def evaluate_answer(question, answer, audio_features):
     prompt = f"""
 You're an AI interviewer.
 
-Score the following response from 0 to 10 and give a one-line feedback.
+Evaluate the following response for both content and delivery. Consider the answer, as well as the following audio features:
+- Filler words used: {audio_features['filler_count']}
+- Silence ratio: {audio_features['silence_ratio']}
+- Tempo: {audio_features['tempo']}
+- Average pitch: {audio_features['avg_pitch']}
 
 Q: {question}
 A: {answer}
 
 Respond in JSON:
 {{
-  "score": 0-10,
-  "feedback": "..."
+  "score": 0-10,  // holistic score considering both content and delivery
+  "feedback": "..." // mention if fillers, silences, or delivery affected the score
 }}
 """
     try:
@@ -153,9 +157,8 @@ def ask_and_evaluate(question):
     transcript = transcribe_audio(file_path)
     print(f"📝 Transcript: {transcript}")
 
-    result = evaluate_answer(question, transcript)
-
     audio_features = analyze_audio_features(file_path, transcript)
+    result = evaluate_answer(question, transcript, audio_features)
 
     print(f"🎯 Score: {result['score']}/10")
     print(f"🧠 Confidence Score: {audio_features['confidence_score']}/10")

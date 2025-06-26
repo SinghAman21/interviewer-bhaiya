@@ -1,12 +1,12 @@
 {
   "questions": [
     {
-      "question": "Your ResumeMe project uses NLP to match resumes with job descriptions. Can you describe the specific NLP techniques you employed and the challenges you faced in achieving accurate matching, especially considering the variability in resume formatting and wording?",
+      "question": "Your ResumeMe project uses NLP to match resumes with job descriptions.  Can you describe the specific NLP techniques you employed and the challenges you faced in achieving accurate matching, particularly considering the nuances of language and variations in resume formatting?",
       "type": "technical"
     },
     {
-      "question": "Your resume highlights your involvement in both technical and leadership roles within ITSA and Google Developer Groups.  Describe a situation where you had to manage a conflict within a team, and explain the steps you took to resolve it and the outcome.",
-      "type": "behavioral"
+      "question": "The Healthcare AI Link project involved integrating real-time government data.  Describe a situation where you encountered unexpected data inconsistencies or delays. How did you adapt your approach to ensure the project's success and the accuracy of the fund distribution suggestions?",
+      "type": "situational"
     }
   ]
 }

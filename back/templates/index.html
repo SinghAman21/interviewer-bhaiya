@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head><title>AI Interviewer</title></head>
 <body>
@@ -7,5 +7,49 @@
     <input type="file" name="resume" required>
     <button type="submit">Start Interview</button>
   </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Emotion Interview</title>
+</head>
+<body>
+  <h2>🎥 Real-Time Emotion Detector</h2>
+  <video id="webcam" autoplay playsinline width="320" height="240"></video>
+  <script>
+    const video = document.getElementById("webcam");
+
+    async function setupCamera() {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+    }
+
+    function captureFrame() {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext("2d").drawImage(video, 0, 0);
+      return canvas.toDataURL("image/jpeg");
+    }
+
+    function sendFrameToServer(question_id) {
+      const frame = captureFrame();
+      fetch("/analyze_emotion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: frame, question_id })
+      })
+      .then(res => res.json())
+      .then(data => console.log("📊 Emotion:", data.emotion, "🕒", data.timestamp))
+      .catch(console.error);
+    }
+
+    setupCamera();
+
+    // Send a frame every 3 seconds
+    setInterval(() => sendFrameToServer("Q1"), 3000);
+  </script>
 </body>
 </html>
